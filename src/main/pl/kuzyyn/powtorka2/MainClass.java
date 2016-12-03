@@ -46,13 +46,16 @@ public  class MainClass {
 		e.printStackTrace();
 	} catch (TimeoutException e) {
 		System.out.println("OPS timeout");
+		task1.cancel(true);
 		e.printStackTrace();
 	}
-	System.out.println("task1 czy pracuje: "+task1.isDone());
+	
+	System.out.println("task1 czy zakonczony: "+task1.isDone());
+	
 	if (task1.isDone()){
 		System.out.println("Jestem w if");
 	}
-		
+	mc.pool.shutdown();
 		
 	/*String message = STX+"uyjjjRG"+ ETX;
 	char BBC =  (char)mc.getBBC(message);
