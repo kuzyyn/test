@@ -1,5 +1,0 @@
-package pierwszy;
-
-class Urzadzenie {
-
-}
