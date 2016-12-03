@@ -1,0 +1,5 @@
+package pierwszy;
+
+class Urzadzenie {
+
+}
