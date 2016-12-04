@@ -31,7 +31,7 @@ public  class MainClass {
 
 	MainClass mc = new MainClass();
 	mc.setupExecutor();
-	CallableTest callable = new CallableTest("ACK","NAK");
+	CallablePractise callable = new CallablePractise("ACK","NAK");
 	
 	
 	Future task1 = mc.pool.submit(callable);

@@ -1,0 +1,12 @@
+04.12.2016
+	
+	- Rozbudowano build.xml o przeprowadzanie automatycznych testów (wszystkich) przy kompilacji
+	- rozdzielenie skompilowanych testów i plików zrod³owych na tests i classes
+	- Build JAR
+	- Deploy JAR
+
+
+03.12.2016
+
+	- Dodano pliki build.xml i build.properties (Ant)
+	- Pierwsza wrzutka w repozytorium Github

@@ -28,7 +28,7 @@ public class Demo {
 	//	io.readFromUserInput();
 	
 		
-		SwitchTest st = new SwitchTest();
+		Switch st = new Switch();
 		st.dayChosen(Days.tue);
 		System.out.println("dalszy kod");
 		

@@ -1,48 +1,88 @@
 <?xml version="1.0"?>
-   <project name="Tests" basedir="." default="deploy">
-   	<property name ="src.dir" value ="src" />
+
+<project name="Tests" basedir="." default="deploy">
+
+	<property name ="src.dir" value ="src" />
 	<property name ="build.dir" value ="binary" />
-   	<property name="deploy.dir" value="deploy"/>
-	
-  	<target name="build" depends="clean" description="Compile files...">
-   		<mkdir dir="${build.dir}"/>
-  		<javac destdir="${build.dir}" source="1.8" target="1.8" debug="true"
-  			deprecation="false" optimize="false" failonerror="true">
-  				<src path ="${src.dir}"/>
-  		</javac>
-  	</target>	
-   	
-   	<target name="clean" description="clean output">
-   		<delete failonerror="false">
-   			<fileset dir="${build.dir}">
-   				<include name="**/*.class"/>
-   			</fileset>
-   		</delete>
-   		<delete dir="deploy" failonerror="false"/>
-   	</target>
-   	
-   	<target name="build-jar" description="Building an JAR file" depends="build">
-   	 	<jar destfile="${build.dir}/Main.jar"
-   		   		basedir="${build.dir}" 
-   	 			includes="main/**"
+	<property name="deploy.dir" value="deploy"/>
+	<property name="class.dir" value ="${build.dir}/classes"/>
+
+	<target name="clean" description="clean output">
+		<delete failonerror="false">
+			<fileset dir="${build.dir}">
+				<include name="**/*.*"/>
+			</fileset>
+		</delete>
+		<delete dir="deploy" failonerror="false"/>
+	</target>
+
+	<target name="build" depends="clean" description="Compile source files...">
+		<mkdir dir="${class.dir}"/>
+		<javac destdir="${class.dir}" srcdir="${src.dir}" source="1.8" target="1.8" debug="true"
+  			deprecation="false" optimize="false" failonerror="true" includeantruntime="true">
+
+			<include name="main/**" />
+		</javac>
+	</target>
+
+
+	<path id="junit-classpath">
+		<fileset dir="${basedir}/lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="build-tests" depends="build" description="Compile test files...">
+		<javac destdir="${build.dir}" srcdir="${src.dir}" source="1.8" target="1.8" debug="true"
+  			deprecation="false" optimize="false" failonerror="true" includeantruntime="true">
+
+			<include name="tests/**" />
+			<classpath refid="junit-classpath"/>
+			<classpath path="${class.dir}" />
+
+
+		</javac>
+	</target>
+
+	<target name="test" description="Running all JUnit tests" depends="build-tests">
+		<junit>
+			<classpath refid="junit-classpath" />
+			<classpath path="${build.dir}" />
+			<classpath path="${class.dir}" />
+			<batchtest>
+				<fileset dir="${build.dir}">
+					<include name="tests/**/*Test*" />
+				</fileset>
+			</batchtest>
+			<formatter type="brief" usefile="false"/>
+		</junit>
+
+	</target>
+
+	<target name="build-jar" description="Building an JAR file" depends="test">
+		<jar destfile="${build.dir}/Main.jar"
+   		   		basedir="${class.dir}" 
+   	 			
    		   		>
-   		   		<manifest >
-   		   			<attribute name="Main-Class" value = "main.pl.kuzyyn.powtorka2.MainClass" />
-   		   		</manifest>
-   		   	</jar>	
-   	   		
-   	</target>
-   	<target name="deploy" depends="build-jar">
-   		<mkdir dir="${deploy.dir}"/>
-   		<copy todir="${deploy.dir}">
-   			<fileset dir="${build.dir}" >
-   				<include name="**/*.*" />
-   			</fileset>
-   		</copy>
-   		
-   	</target>
-   
-  
-  
-   
+			<manifest >
+				<attribute name="Main-Class" value = "main.pl.kuzyyn.powtorka2.MainClass" />
+			</manifest>
+		</jar>
+
+	</target>
+	<target name="deploy" depends="build-jar">
+		<mkdir dir="${deploy.dir}"/>
+		<copy todir="${deploy.dir}">
+			<fileset dir="${build.dir}" >
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+
+	</target>
+
+
+
+
+
+
 </project>
